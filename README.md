@@ -6,6 +6,10 @@ Y   Y  EEEEE  LL    EEEEE  M   M   A      SSSSS  Y   Y  NN  N  CCCCC
   Y    EEEEE  LLLLL EEEEE  M   M A   A    SSSSS    Y    N   N  CCCCC
 ```
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c547e860e5053aa19a6ea39ad41a7fc62c777e05
 
 
 # Exemple de script PHP pour synchroniser des bases de données MySQL
