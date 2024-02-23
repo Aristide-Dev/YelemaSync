@@ -7,7 +7,8 @@
         "name": "aristide",
         "email": "aristide@yelema.tech"
     }],
-    "minimum-stability": "dev",
+    "version": "0.1.0",
+    "keywords": ["database", "synchronization", "replication"],
     "require": {
         "php": "^8.1.22"
     },
@@ -15,5 +16,14 @@
         "psr-4": {
             "AfricaDev\\YelemaSync\\": "src/"
         }
-    }
+    },
+    "support": {
+        "issues": "https://github.com/africadev/yelemasync/issues",
+        "email": "aristide@yelema.tech"
+    },
+    "documentation": "https://github.com/africadev/yelemasync#readme",
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/africadev/yelemasync"
+    }]
 }
