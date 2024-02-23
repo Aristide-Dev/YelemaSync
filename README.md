@@ -63,4 +63,4 @@ $synchronizer->syncToLocal();
 ### Informations complémentaires
 - Version : 0.1.0
 - Créateur : Aristide-Dev
-- Version de PHP requise : ^8.1.22
+- Version de PHP requise : >=7.4
