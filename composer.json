@@ -1,7 +1,7 @@
 {
     "name": "africadev/yelemasync",
     "description": "Repliquer et Synchroniser deux bases de données MySQL distantes",
-    "type": "library",
+    "type": "package",
     "license": "MIT",
     "authors": [{
         "name": "aristide",
@@ -10,7 +10,7 @@
     }],
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "version": "v0.1.0",
+    "version": "0.1.1",
     "keywords": ["database", "synchronization", "replication"],
     "require": {
         "php": ">=7.4"
@@ -26,23 +26,10 @@
     },
     "documentation": "https://github.com/africadev/yelemasync#readme",
     "repositories": [{
-            "type": "composer",
-            "url": "https://packagist.org/packages/africadev/yelemasync"
-        }, {
-            "type": "vcs",
-            "url": "https://github.com/africadev/yelemasync"
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "africadev/yelemasync",
-                "version": "0.1.0",
-                "dist": {
-                    "url": "https://github.com/Aristide-Dev/YelemaSync/archive/refs/heads/master.zip",
-                    "type": "zip"
-                },
-                "reference": "tags/Smarty_3_1_7/distribution/"
-            }
-        }
-    ]
+        "type": "composer",
+        "url": "https://packagist.org/packages/africadev/yelemasync"
+    }, {
+        "type": "vcs",
+        "url": "https://github.com/africadev/yelemasync"
+    }]
 }

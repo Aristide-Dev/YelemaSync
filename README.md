@@ -61,6 +61,6 @@ $synchronizer->syncToLocal();
 - N'oubliez pas de gérer les erreurs et exceptions qui pourraient survenir lors de l'exécution de ces opérations de synchronisation. Vous pouvez utiliser des blocs try-catch pour cela.
 
 ### Informations complémentaires
-- Version : 0.1.0
+- Version : 0.1.1
 - Créateur : Aristide-Dev
 - Version de PHP requise : >=7.4
