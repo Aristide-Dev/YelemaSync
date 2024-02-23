@@ -1,3 +1,10 @@
+Y   Y  EEEEE  LL    EEEEE  M   M   A      SSSSS  Y   Y  NN  N  CCCCC
+ Y Y   E      LL    E      MM MM  A A     S       Y Y   N N N  C    
+  Y    EEEE   LL    EEEE   M M M AAAAA    SSSSS    Y    N  NN  C    
+  Y    E      LL    E      M   M A   A        S    Y    N   N  C    
+  Y    EEEEE  LLLLL EEEEE  M   M A   A    SSSSS    Y    N   N  CCCCC
+
+
 # Exemple de script PHP pour synchroniser des bases de données MySQL
 
 Ce script PHP permet de synchroniser les données entre une base de données locale et une base de données externe MySQL.
