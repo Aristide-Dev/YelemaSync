@@ -11,8 +11,7 @@
     "version": "0.1.0",
     "keywords": ["database", "synchronization", "replication"],
     "require": {
-        "php": "^8.1.22",
-        "africadev/yelemasync": "master"
+        "php": "^8.1.22"
     },
     "autoload": {
         "psr-4": {
