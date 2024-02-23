@@ -5,14 +5,15 @@
     "license": "MIT",
     "authors": [{
         "name": "aristide",
-        "email": "aristide@yelema.tech"
+        "email": "aristide@yelema.tech",
+        "role": "Developeur"
     }],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "version": "v0.1.0",
     "keywords": ["database", "synchronization", "replication"],
     "require": {
-        "php": "^8.1.22"
+        "php": ">=7.4"
     },
     "autoload": {
         "psr-4": {
@@ -25,7 +26,23 @@
     },
     "documentation": "https://github.com/africadev/yelemasync#readme",
     "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/africadev/yelemasync"
-    }]
+            "type": "composer",
+            "url": "https://packagist.org/packages/africadev/yelemasync"
+        }, {
+            "type": "vcs",
+            "url": "https://github.com/africadev/yelemasync"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "africadev/yelemasync",
+                "version": "0.1.0",
+                "dist": {
+                    "url": "https://github.com/Aristide-Dev/YelemaSync/archive/refs/heads/master.zip",
+                    "type": "zip"
+                },
+                "reference": "tags/Smarty_3_1_7/distribution/"
+            }
+        }
+    ]
 }
