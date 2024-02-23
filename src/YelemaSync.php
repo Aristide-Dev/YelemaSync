@@ -177,7 +177,7 @@ class YelemaSync
     private function updateLocalData($pdo, $table, $primaryKey, $row)
     {
         try {
-            echo colorize("\t\t -- Mise à jour de la table $table\n",'light_blue');
+            echo colorize("\t\t -- Mise à jour de la table $table \n",'light_blue');
             $this->disableForeignKeyChecks($pdo);
 
             $setClause = '';
