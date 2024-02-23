@@ -7,9 +7,9 @@
         "name": "aristide",
         "email": "aristide@yelema.tech"
     }],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
-        "php": "^7.0"
+        "php": "^8.2"
     },
     "autoload": {
         "psr-4": {
