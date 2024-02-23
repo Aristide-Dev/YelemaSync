@@ -63,75 +63,63 @@ class YelemaSync
 
     private function get_local_PDO(): PDO
     {
-        echo colorize("Configuration de la db LOCALE\n", "light_blue");
+        echo colorize("- Connexion à la db LOCALE\n", "white");
         return new PDO("mysql:dbname={$this->LOCAL_DB_NAME};host={$this->LOCAL_HOST};charset=utf8mb4;", $this->LOCAL_DB_USER, $this->LOCAL_DB_PASSWORD, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
         ]);
-
-        echo colorize("LOCAL_HOST: {$this->LOCAL_HOST}\n", "green");
-        echo colorize("LOCAL_DB_NAME: {$this->LOCAL_DB_NAME}\n", "green");
-        echo colorize("LOCAL_DB_USER: {$this->LOCAL_DB_USER}\n", "green");
-        echo colorize("LOCAL_DB_PASSWORD: **********\n", "green");
-        echo colorize("\n\n\n");
     }
 
     private function get_external_PDO(): PDO
     {
-        echo colorize("Configuration de la db EXTERNE | DISTANTE\n", "light_blue");
+        echo colorize("- Connexion à la db EXTERNE | DISTANTE\n", "white");
         return new PDO("mysql:dbname={$this->EXTERNAL_DB_NAME};host={$this->EXTERNAL_HOST};charset=utf8mb4;", $this->EXTERNAL_DB_USER, $this->EXTERNAL_DB_PASSWORD, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
         ]);
-
-        echo colorize("EXTERNAL_HOST: {$this->EXTERNAL_HOST}\n", "green");
-        echo colorize("EXTERNAL_DB_NAME: {$this->EXTERNAL_DB_NAME}\n", "green");
-        echo colorize("EXTERNAL_DB_USER: {$this->EXTERNAL_DB_USER}\n", "green");
-        echo colorize("EXTERNAL_DB_PASSWORD: **********\n", "green");
-        echo colorize("\n\n\n");
     }
 
     // Méthode pour désactiver les contraintes de clé étrangère
     private function disableForeignKeyChecks($pdo) {
-        echo colorize("\t\t -- désactivation des contraintes... \n", "light_blue");
+        // echo colorize("\r -- désactivation des contraintes... \n", "light_blue");
         $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
-        echo colorize("\t\t -- contraintes des clées etrangeres désactivées \n", "green");
+        // echo colorize("\r -- contraintes des clés étrangères désactivées \n", "green");
     }
 
     // Méthode pour réactiver les contraintes de clé étrangère
     private function enableForeignKeyChecks($pdo) {
-        echo colorize("\t\t -- activation des contraintes... \n", "light_blue");
+        // echo colorize("\r -- activation des contraintes... \n", "light_blue");
         $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
-        echo colorize("\t\t -- contraintes des clées etrangeres activées \n", "green");
+        // echo colorize("\r -- contraintes des clés étrangères activées \n", "green");
     }
 
     private function getAllTablesList($pdo): array
     {
         try {
-            echo colorize("\t\t -- récupération de la liste des tables...\n", "light_blue");
+            echo colorize(" -- récupération de la liste des tables...", "light_gray");
             $stmt = $pdo->query("SHOW TABLES");
             return $stmt->fetchAll(PDO::FETCH_COLUMN);
         } catch (PDOException $e) {
-            echo colorize("\t\t -- Erreur lors de la récupération de la liste des tables : " . $e->getMessage()."\n", "red");
+            echo colorize("\r -- Erreur lors de la récupération de la liste des tables : " . $e->getMessage()."\n", "light_red");
         }
     }
 
     private function getTableData($pdo, $table): array
     {
         try {
-            echo colorize("\t\t -- récupération des données de la table: $table\n", "light_blue");
+            // echo colorize("\n-- récupération des données de la table: $table \n", "light_blue");
             $stmt = $pdo->prepare("SELECT * FROM $table");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de la récupération des données de la table $table : " . $e->getMessage()."\n",'red');
+            echo colorize("\r -- Erreur lors de la récupération des données de la table $table : " . $e->getMessage(), 'light_red');
         }
     }
 
     private function getPrimaryKeyColumns($pdo, $table)
     {
         try {
-            echo colorize("\t\t -- récupération des colonnes de clé primaire pour la table $table\n",'light_blue');
+            // echo colorize("\r -- récupération des colonnes de clé primaire pour la table $table\n",'light_blue');
             $stmt = $pdo->prepare("SHOW KEYS FROM $table WHERE Key_name = 'PRIMARY'");
             $stmt->execute();
             $primaryKeys = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -143,7 +131,7 @@ class YelemaSync
 
             return $columns;
         } catch (PDOException $e) {
-            echo colorize("\t\t -- Erreur lors de la récupération des colonnes de clé primaire pour la table $table : " . $e->getMessage()."\n","red");
+            echo colorize("\r -- Erreur lors de la récupération des colonnes de clé primaire pour la table $table : " . $e->getMessage(),"light_red");
         }
     }
 
@@ -157,7 +145,7 @@ class YelemaSync
     private function insertRow($pdo, $table, $row)
     {
         try {
-            echo colorize("\t\t -- insertion des données dans la table $table\n",'light_blue');
+            // echo colorize("\r -- insertion des données dans la table $table\n",'light_blue');
             $this->disableForeignKeyChecks($pdo);
 
             $columns = implode(', ', array_keys($row));
@@ -166,9 +154,9 @@ class YelemaSync
             $stmt = $pdo->prepare("INSERT INTO $table ($columns) VALUES ($placeholders)");
 
             $stmt->execute(array_values($row));
-            echo colorize("Terminé...\n",'green');
+            echo colorize("\r -- Terminé...\n",'green');
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de l'insertion dans la table $table :" . $e->getMessage()."\n","red");
+            echo colorize("\r -- Erreur lors de l'insertion dans la table $table :" . $e->getMessage()."\n","light_red");
         } finally {
             $this->enableForeignKeyChecks($pdo);
         }
@@ -177,7 +165,7 @@ class YelemaSync
     private function updateLocalData($pdo, $table, $primaryKey, $row)
     {
         try {
-            echo colorize("\t\t -- Mise à jour de la table $table \n",'light_blue');
+            // echo colorize("\r -- Mise à jour de la table $table",'light_blue');
             $this->disableForeignKeyChecks($pdo);
 
             $setClause = '';
@@ -200,9 +188,9 @@ class YelemaSync
             $stmt->bindValue(":$primaryKey", $row[$primaryKey]);
 
             $stmt->execute();
-            echo colorize("Terminé...\n",'green');
+            // echo colorize("\r -- Terminé...\n",'green');
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de la mise à jour de la table $table : " . $e->getMessage()."\n", 'red');
+            echo colorize("\r -- Erreur lors de la mise à jour de la table $table : " . $e->getMessage()."\n","light_red");
         } finally {
             $this->enableForeignKeyChecks($pdo);
         }
@@ -210,17 +198,24 @@ class YelemaSync
 
     public function syncToLocal()
     {
-        echo colorize("Début de la synchronisation de la base de données locale vers la base de données externe \n", "light_blue");
+        echo colorize("\n\n--------------------------------------------------------------------------------------------\n", "white");
+        echo colorize("--------------------------------------------------------------------------------------------", "white");
+        echo colorize("\nDébut de la synchronisation de la base de données locale vers la base de données externe\n", "dark_gray");
         try {
             $this->disableForeignKeyChecks($this->LOCAL_PDO);
 
             $tables = $this->getAllTablesList($this->LOCAL_PDO);
+            
+            echo colorize("\n Synchronisation en cours...\n", "light_red");
             foreach ($tables as $table) {
                 $localData = $this->getTableData($this->LOCAL_PDO, $table);
                 $externalData = $this->getTableData($this->EXTERNAL_PDO, $table);
 
                 $primaryKeyColumns = $this->getPrimaryKeyColumns($this->LOCAL_PDO, $table);
                 $primaryKey = $primaryKeyColumns[0] ?? null;
+
+                $totalRows = count($externalData);
+                $syncedRows = 0;
 
                 foreach ($externalData as $row) {
                     $existingRow = array_filter($localData, fn ($r) => $r[$primaryKey] === $row[$primaryKey]);
@@ -231,12 +226,18 @@ class YelemaSync
                         } else {
                             $this->updateLocalData($this->LOCAL_PDO, $table, $primaryKey, $row);
                         }
+                        $syncedRows++;
+                        $percentage = intval(($syncedRows / $totalRows) * 100);
+                        echo colorize("\r  progression : $percentage% ", percentColor($percentage));
                     }
                 }
             }
-            echo colorize("Synchronisation de la base de données locale vers la base de données externe effectuée\n",'green');
+            echo colorize("\n Synchronisation effectuée...", "light_blue");
+            echo colorize("\nSynchronisation de la base de données locale vers la base de données externe effectuée",'green');
+            echo colorize("\n--------------------------------------------------------------------------------------------\n", "white");
+            echo colorize("--------------------------------------------------------------------------------------------", "white");
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de la synchronisation vers la base de données locale : " . $e->getMessage(), 'red');
+            echo colorize("Erreur lors de la synchronisation vers la base de données locale : " . $e->getMessage(), 'light_red');
         } finally {
             $this->enableForeignKeyChecks($this->LOCAL_PDO);
         }
@@ -244,17 +245,23 @@ class YelemaSync
 
     public function syncToExternal()
     {
-        echo colorize("Début de la synchronisation de la base de données externe vers la base de données locale \n", "light_blue");
+        echo colorize("\n\n--------------------------------------------------------------------------------------------\n", "white");
+        echo colorize("--------------------------------------------------------------------------------------------", "white");
+        echo colorize("\nDébut de la synchronisation de la base de données externe vers la base de données locale \n", "dark_gray");
         try {
             $this->disableForeignKeyChecks($this->EXTERNAL_PDO);
 
             $tables = $this->getAllTablesList($this->EXTERNAL_PDO);
+            echo colorize("\n Synchronisation en cours...\n", "light_red");
             foreach ($tables as $table) {
                 $localData = $this->getTableData($this->LOCAL_PDO, $table);
                 $externalData = $this->getTableData($this->EXTERNAL_PDO, $table);
 
                 $primaryKeyColumns = $this->getPrimaryKeyColumns($this->EXTERNAL_PDO, $table);
                 $primaryKey = $primaryKeyColumns[0] ?? null;
+
+                $totalRows = count($localData);
+                $syncedRows = 0;
 
                 foreach ($localData as $row) {
                     $existingRow = array_filter($externalData, fn ($r) => $r[$primaryKey] === $row[$primaryKey]);
@@ -265,12 +272,18 @@ class YelemaSync
                         } else {
                             $this->updateLocalData($this->EXTERNAL_PDO, $table, $primaryKey, $row);
                         }
+                        $syncedRows++;
+                        $percentage = intval(($syncedRows / $totalRows) * 100);
+                        echo colorize("\r progression : $percentage% ", percentColor($percentage));
                     }
                 }
-                echo colorize("Synchronisation de la base de données externe vers la base de données local effectuée\n",'green');
             }
+            echo colorize("\n Synchronisation effectuée...", "light_blue");
+            echo colorize("\nSynchronisation de la base de données externe vers la base de données local effectuée\n",'green');
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de la synchronisation vers la base de données externe : " . $e->getMessage(), "red");
+            echo colorize("Erreur lors de la synchronisation vers la base de données externe : " . $e->getMessage(), "light_red");
+            echo colorize("\n--------------------------------------------------------------------------------------------\n", "white");
+            echo colorize("--------------------------------------------------------------------------------------------", "white");
         } finally {
             $this->enableForeignKeyChecks($this->EXTERNAL_PDO);
         }

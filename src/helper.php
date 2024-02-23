@@ -28,3 +28,17 @@ function colorize($text, $color="black") {
         return $text; // Retourne le texte sans couleur si la couleur n'est pas trouvée
     }
 }
+
+function percentColor($value)
+{
+    if($value< 25)
+    {
+        return "red";
+    }
+    elseif($value<= 25 && $value < 100)
+    {
+        return "yellow";
+    }else{
+        return "yellow";
+    }
+}
