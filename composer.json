@@ -8,6 +8,7 @@
         "email": "aristide@yelema.tech"
     }],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "version": "0.1.0",
     "keywords": ["database", "synchronization", "replication"],
     "require": {
