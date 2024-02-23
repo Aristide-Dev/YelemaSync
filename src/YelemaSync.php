@@ -16,7 +16,7 @@ namespace AfricaDev\YelemaSync;
 
 
 
-require_once('./helper.php');
+require_once('helper.php');
 use \PDO;
 use \PDOException;
 
@@ -93,45 +93,45 @@ class YelemaSync
 
     // Méthode pour désactiver les contraintes de clé étrangère
     private function disableForeignKeyChecks($pdo) {
-        echo colorize("désactivation des contraintes... \n", "light_blue");
+        echo colorize("\t\t -- désactivation des contraintes... \n", "light_blue");
         $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
-        echo colorize("contraintes des clées etrangeres désactivées \n", "green");
+        echo colorize("\t\t -- contraintes des clées etrangeres désactivées \n", "green");
     }
 
     // Méthode pour réactiver les contraintes de clé étrangère
     private function enableForeignKeyChecks($pdo) {
-        echo colorize("activation des contraintes... \n", "light_blue");
+        echo colorize("\t\t -- activation des contraintes... \n", "light_blue");
         $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
-        echo colorize("contraintes des clées etrangeres activées \n", "green");
+        echo colorize("\t\t -- contraintes des clées etrangeres activées \n", "green");
     }
 
     private function getAllTablesList($pdo): array
     {
         try {
-            echo colorize("récupération de la liste des tables...\n", "light_blue");
+            echo colorize("\t\t -- récupération de la liste des tables...\n", "light_blue");
             $stmt = $pdo->query("SHOW TABLES");
             return $stmt->fetchAll(PDO::FETCH_COLUMN);
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de la récupération de la liste des tables : " . $e->getMessage()."\n", "red");
+            echo colorize("\t\t -- Erreur lors de la récupération de la liste des tables : " . $e->getMessage()."\n", "red");
         }
     }
 
     private function getTableData($pdo, $table): array
     {
         try {
-            echo colorize("récupération des données de la table: $table\n", "light_blue");
+            echo colorize("\t\t -- récupération des données de la table: $table\n", "light_blue");
             $stmt = $pdo->prepare("SELECT * FROM $table");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de la récupération des données de la table $table : " . $e->getMessage(),'red');
+            echo colorize("Erreur lors de la récupération des données de la table $table : " . $e->getMessage()."\n",'red');
         }
     }
 
     private function getPrimaryKeyColumns($pdo, $table)
     {
         try {
-            echo colorize("récupération des colonnes de clé primaire pour la table $table",'light_blue');
+            echo colorize("\t\t -- récupération des colonnes de clé primaire pour la table $table\n",'light_blue');
             $stmt = $pdo->prepare("SHOW KEYS FROM $table WHERE Key_name = 'PRIMARY'");
             $stmt->execute();
             $primaryKeys = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -143,7 +143,7 @@ class YelemaSync
 
             return $columns;
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de la récupération des colonnes de clé primaire pour la table $table : " . $e->getMessage(),"red");
+            echo colorize("\t\t -- Erreur lors de la récupération des colonnes de clé primaire pour la table $table : " . $e->getMessage()."\n","red");
         }
     }
 
@@ -157,7 +157,7 @@ class YelemaSync
     private function insertRow($pdo, $table, $row)
     {
         try {
-            echo colorize("insertion des données dans la table $table",'light_blue');
+            echo colorize("\t\t -- insertion des données dans la table $table\n",'light_blue');
             $this->disableForeignKeyChecks($pdo);
 
             $columns = implode(', ', array_keys($row));
@@ -168,7 +168,7 @@ class YelemaSync
             $stmt->execute(array_values($row));
             echo colorize("Terminé...\n",'green');
         } catch (PDOException $e) {
-            echo colorize("Erreur lors de l'insertion dans la table $table :" . $e->getMessage(),"red");
+            echo colorize("Erreur lors de l'insertion dans la table $table :" . $e->getMessage()."\n","red");
         } finally {
             $this->enableForeignKeyChecks($pdo);
         }
@@ -177,7 +177,7 @@ class YelemaSync
     private function updateLocalData($pdo, $table, $primaryKey, $row)
     {
         try {
-            echo colorize("Mise à jour de la table $table",'light_blue');
+            echo colorize("\t\t -- Mise à jour de la table $table\n",'light_blue');
             $this->disableForeignKeyChecks($pdo);
 
             $setClause = '';
@@ -202,7 +202,7 @@ class YelemaSync
             $stmt->execute();
             echo colorize("Terminé...\n",'green');
         } catch (PDOException $e) {
-            echo "Erreur lors de la mise à jour de la table $table : " . $e->getMessage();
+            echo colorize("Erreur lors de la mise à jour de la table $table : " . $e->getMessage()."\n", 'red');
         } finally {
             $this->enableForeignKeyChecks($pdo);
         }
